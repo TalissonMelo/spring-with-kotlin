@@ -1,13 +1,18 @@
 package com.talissonmelo.tour.controller
 
 import com.talissonmelo.tour.entities.Promocao
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.concurrent.ConcurrentHashMap
 
 @RestController
 @RequestMapping(value = ["/promocoes"])
 class PromocaoController {
+
+    @Autowired
+    lateinit var promocoes: ConcurrentHashMap<Long, Promocao>
 
     @GetMapping(value = ["/hello"])
     fun olaMundo() : String {
@@ -16,8 +21,5 @@ class PromocaoController {
     }
 
     @GetMapping
-    fun buscarPromocoes(): Promocao {
-        val promocao = Promocao(1,"Maravilhosa viagem", "Cancun", 10,true, 4499.99)
-        return promocao
-    }
+    fun buscarPromocoes() = promocoes[1];
 }
