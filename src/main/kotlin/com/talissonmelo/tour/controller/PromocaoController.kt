@@ -33,4 +33,10 @@ class PromocaoController {
     fun delecao(@PathVariable promocaoId: Long){
         promocoes.remove(promocaoId);
     }
+
+    @PutMapping(value = ["/{promocaoId}"])
+    fun atualizar(@PathVariable promocaoId: Long, @RequestBody promocao: Promocao){
+        promocoes.remove(promocaoId);
+        promocoes[promocaoId] = promocao
+    }
 }
