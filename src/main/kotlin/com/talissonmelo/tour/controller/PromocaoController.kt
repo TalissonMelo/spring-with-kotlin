@@ -17,8 +17,6 @@ class PromocaoController {
         promocoes.filter {
             it.value.local.contains(local, true);
         }.map(Map.Entry<Long, Promocao>::value).toList();
-    
-
 
     @GetMapping(value = ["/{promocaoId}"])
     fun buscar(@PathVariable promocaoId: Long) = promocoes[promocaoId];
