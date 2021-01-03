@@ -12,14 +12,13 @@ class PromocaoController {
     @Autowired
     lateinit var promocoes: ConcurrentHashMap<Long, Promocao>
 
-    @GetMapping(value = ["/hello"])
-    fun olaMundo() : String {
-        println("Olá Mundo");
-        return "Olá Mundo";
-    }
-
     @GetMapping
-    fun buscarPromocoes() = promocoes[1];
+    fun buscarPromocoes(@RequestParam(required = false, defaultValue = "") local: String) =
+        promocoes.filter {
+            it.value.local.contains(local, true);
+        }.map(Map.Entry<Long, Promocao>::value).toList();
+    
+
 
     @GetMapping(value = ["/{promocaoId}"])
     fun buscar(@PathVariable promocaoId: Long) = promocoes[promocaoId];
