@@ -16,10 +16,6 @@ class TourApplication{
 		)
 	}
 
-	//fun promocoes(): ConcurrentHashMap<Long, Promocao> {
-	//	return ConcurrentHashMap<Long, Promocao>(initialPromocoes.associateBy( Promocao:: id  ));
-	//}
-
 	@Bean
 	fun promocoes() =
 			ConcurrentHashMap<Long, Promocao>(initialPromocoes.associateBy( Promocao:: id  ));

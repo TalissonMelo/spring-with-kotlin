@@ -28,4 +28,9 @@ class PromocaoController {
     fun cadastrar(@RequestBody promocao: Promocao){
         promocoes[promocao.id]= promocao;
     }
+
+    @DeleteMapping(value = ["/{promocaoId}"])
+    fun delecao(@PathVariable promocaoId: Long){
+        promocoes.remove(promocaoId);
+    }
 }
