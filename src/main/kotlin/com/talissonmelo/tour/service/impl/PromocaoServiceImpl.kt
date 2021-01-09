@@ -2,8 +2,10 @@ package com.talissonmelo.tour.service.impl
 
 import com.talissonmelo.tour.entities.Promocao
 import com.talissonmelo.tour.service.PromocaoService
+import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 
+@Component
 class PromocaoServiceImpl: PromocaoService {
 
     companion object{
@@ -17,11 +19,9 @@ class PromocaoServiceImpl: PromocaoService {
     var promocoes =
             ConcurrentHashMap<Long, Promocao>(initialPromocoes.associateBy( Promocao:: id  ));
 
-    override fun buscarPromocoes(local: String): List<Promocao> {
-        return promocoes.filter {
+    override fun buscarPromocoes(local: String): List<Promocao> = promocoes.filter {
             it.value.local.contains(local, true);
         }.map(Map.Entry<Long, Promocao>::value).toList();
-    }
 
     override fun buscar(promocaoId: Long): Promocao? {
         return promocoes[promocaoId];
