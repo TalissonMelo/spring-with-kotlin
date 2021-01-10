@@ -32,12 +32,22 @@ class PromocaoController {
     }
 
     @DeleteMapping(value = ["/{promocaoId}"])
-    fun delecao(@PathVariable promocaoId: Long){
-        this.promocaoService.delecao(promocaoId);
+    fun delecao(@PathVariable promocaoId: Long): ResponseEntity<Unit> {
+        var status = HttpStatus.NOT_FOUND
+        if(this.promocaoService.buscar(promocaoId) != null ){
+            status = HttpStatus.ACCEPTED
+            this.promocaoService.delecao(promocaoId);
+        }
+        return ResponseEntity(Unit, status);
     }
 
     @PutMapping(value = ["/{promocaoId}"])
-    fun atualizar(@PathVariable promocaoId: Long, @RequestBody promocao: Promocao){
-        this.promocaoService.atualizar(promocaoId,promocao);
+    fun atualizar(@PathVariable promocaoId: Long, @RequestBody promocao: Promocao): ResponseEntity<Unit> {
+        var status = HttpStatus.NOT_FOUND
+        if(this.promocaoService.buscar(promocaoId) != null ){
+            status = HttpStatus.ACCEPTED
+            this.promocaoService.atualizar(promocaoId,promocao);
+        }
+        return ResponseEntity(Unit, status);
     }
 }
