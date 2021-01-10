@@ -3,6 +3,8 @@ package com.talissonmelo.tour.controller
 import com.talissonmelo.tour.entities.Promocao
 import com.talissonmelo.tour.service.PromocaoService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -17,7 +19,11 @@ class PromocaoController {
         this.promocaoService.buscarPromocoes(local);
 
     @GetMapping(value = ["/{promocaoId}"])
-    fun buscar(@PathVariable promocaoId: Long) = this.promocaoService.buscar(promocaoId);
+    fun buscar(@PathVariable promocaoId: Long): ResponseEntity<Promocao?> {
+        var promocao = this.promocaoService.buscar(promocaoId);
+        var status =  if(promocao != null) HttpStatus.OK else HttpStatus.NOT_FOUND
+        return ResponseEntity(promocao,status);
+    }
 
     @PostMapping
     fun cadastrar(@RequestBody promocao: Promocao){
