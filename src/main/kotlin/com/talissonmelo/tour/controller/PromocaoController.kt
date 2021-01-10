@@ -26,8 +26,9 @@ class PromocaoController {
     }
 
     @PostMapping
-    fun cadastrar(@RequestBody promocao: Promocao){
+    fun cadastrar(@RequestBody promocao: Promocao): ResponseEntity<Unit> {
         this.promocaoService.cadastrar(promocao);
+        return ResponseEntity(Unit,HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = ["/{promocaoId}"])
