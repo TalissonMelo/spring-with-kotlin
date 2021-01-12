@@ -9,45 +9,34 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(value = ["/promocoes"])
-class PromocaoController {
-
-   @Autowired
-   lateinit var promocaoService: PromocaoService;
-
-    @GetMapping
-    fun buscarPromocoes(@RequestParam(required = false, defaultValue = "") local: String) =
-        this.promocaoService.buscarPromocoes(local);
+class PromocaoController(var service: PromocaoService) {
 
     @GetMapping(value = ["/{promocaoId}"])
-    fun buscar(@PathVariable promocaoId: Long): ResponseEntity<Promocao?> {
-        var promocao = this.promocaoService.buscar(promocaoId);
-        var status =  if(promocao != null) HttpStatus.OK else HttpStatus.NOT_FOUND
-        return ResponseEntity(promocao,status);
+    fun buscar(@PathVariable promocaoId: Long): ResponseEntity<Promocao> {
+        var promocao = service.buscarId(promocaoId);
+        return ResponseEntity.ok().body(promocao);
+    }
+
+    @GetMapping
+    fun buscarTodos(): List<Promocao> {
+        return service.buscar();
     }
 
     @PostMapping
-    fun cadastrar(@RequestBody promocao: Promocao): ResponseEntity<Unit> {
-        this.promocaoService.cadastrar(promocao);
-        return ResponseEntity(Unit,HttpStatus.CREATED);
+    fun cadastrar(@RequestBody promocao: Promocao): ResponseEntity<Promocao> {
+       var promocao = service.adicionar(promocao);
+        return ResponseEntity.ok().body(promocao);
     }
 
     @DeleteMapping(value = ["/{promocaoId}"])
     fun delecao(@PathVariable promocaoId: Long): ResponseEntity<Unit> {
-        var status = HttpStatus.NOT_FOUND
-        if(this.promocaoService.buscar(promocaoId) != null ){
-            status = HttpStatus.ACCEPTED
-            this.promocaoService.delecao(promocaoId);
-        }
-        return ResponseEntity(Unit, status);
+        service.deletar(promocaoId);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = ["/{promocaoId}"])
-    fun atualizar(@PathVariable promocaoId: Long, @RequestBody promocao: Promocao): ResponseEntity<Unit> {
-        var status = HttpStatus.NOT_FOUND
-        if(this.promocaoService.buscar(promocaoId) != null ){
-            status = HttpStatus.ACCEPTED
-            this.promocaoService.atualizar(promocaoId,promocao);
-        }
-        return ResponseEntity(Unit, status);
+    fun atualizar(@PathVariable promocaoId: Long, @RequestBody promocao: Promocao): ResponseEntity<Promocao> {
+        var promocao = service.atualizar(promocaoId, promocao);
+        return ResponseEntity.ok().body(promocao);
     }
 }
